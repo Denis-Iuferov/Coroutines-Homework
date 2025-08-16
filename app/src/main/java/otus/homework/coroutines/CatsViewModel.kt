@@ -9,12 +9,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.net.SocketTimeoutException
 
 class CatsViewModel(private val catsService: CatsService) : ViewModel() {
     private val _uiModelFlow = MutableStateFlow<Result>(Result.Loading)
-    val uiModelFlow: StateFlow<Result> = _uiModelFlow
+    val uiModelFlow: StateFlow<Result> = _uiModelFlow.asStateFlow()
     private val exceptionHandler = CoroutineExceptionHandler { _, e ->
         when (e) {
             is SocketTimeoutException -> {
