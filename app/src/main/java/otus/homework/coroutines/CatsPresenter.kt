@@ -1,12 +1,12 @@
 package otus.homework.coroutines
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.SocketTimeoutException
@@ -39,7 +39,7 @@ class CatsPresenter(
                     null
                 }
             } catch (e: Throwable) {
-                ensureActive()
+                if (e is CancellationException) throw e
                 when (e) {
                     is SocketTimeoutException -> {
                         withContext(Dispatchers.Main) {
@@ -67,7 +67,7 @@ class CatsPresenter(
                     null
                 }
             } catch (e: Throwable) {
-                ensureActive()
+                if (e is CancellationException) throw e
                 null
             }
         }
